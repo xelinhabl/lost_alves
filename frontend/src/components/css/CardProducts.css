@@ -1,0 +1,180 @@
+/* Card Products Styles */
+.card-product {
+  background-color: white;
+  border: 1px solid black;
+  padding: 20px;
+  max-width: 400px;
+  font-family: Arial, sans-serif;
+  transition: box-shadow 0.3s ease;
+}
+
+.card-product:hover {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Carousel Styles */
+.carousel-container {
+  position: relative;
+}
+
+.carousel-main-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.main-image {
+  width: 100%;
+  max-width: 300px; /* Tamanho fixo */
+  height: 300px; /* Tamanho fixo */
+  object-fit: cover; /* Para ajustar as imagens mantendo o aspecto */
+  border-radius: 10px;
+}
+
+.carousel-arrow {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: black;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.prev {
+  left: -10px;
+}
+
+.next {
+  right: -10px;
+}
+
+.carousel-thumbnails {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.thumbnail {
+  width: 60px;
+  height: 60px;
+  margin: 0 5px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.thumbnail.active {
+  border-color: black;
+}
+
+/* Product Details */
+.product-details {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.product-title {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.size-selector {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.size-option {
+  border: 1px solid black;
+  background-color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.size-option.selected {
+  background-color: black;
+  color: white;
+}
+
+.quantity-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.quantity-button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid black;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.quantity-button:hover {
+  background-color: #f0f0f0;
+}
+
+.quantity-input {
+  width: 50px;
+  text-align: center;
+  font-size: 16px;
+  border: 1px solid black;
+  margin: 0 5px;
+}
+
+.product-price {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.favorite-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: black;
+  transition: color 0.3s;
+}
+
+.favorite-button.favorited {
+  color: red;
+}
+
+.buy-button {
+  background-color: green;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.buy-button:hover {
+  background-color: darkgreen;
+}
