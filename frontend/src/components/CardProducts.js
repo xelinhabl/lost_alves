@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useTheme } from '../context/ThemeContext'; // Certifique-se de que o caminho está correto
 import './css/CardProducts.css';
 
 const CardProducts = () => {
+  const { darkMode } = useTheme(); // Acessando o contexto de tema
   const [isFavorited, setIsFavorited] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -65,7 +67,7 @@ const CardProducts = () => {
   const sizeOptions = ['P', 'M', 'G', 'GG'];
 
   return (
-    <div className="card-product">
+    <div className={`card-product ${darkMode ? 'card-product-dark' : ''}`}>
       <div className="carousel-container">
         <div className="carousel-main-image">
           <button className="carousel-arrow prev" onClick={prevImage}>❮</button>

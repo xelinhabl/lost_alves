@@ -1,18 +1,27 @@
-/* Card Products Styles */
+/* Estilo básico do card do produto */
 .card-product {
   background-color: white;
-  border: 1px solid black;
+  color: black;
   padding: 20px;
-  max-width: 400px;
-  font-family: Arial, sans-serif;
-  transition: box-shadow 0.3s ease;
+  border-radius: 8px;
+  margin: 10px;
+  transition: all 0.3s ease-in-out; /* Transição suave para mudanças de tema */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Sombra suave no modo claro */
 }
 
+/* Estilo do card no modo escuro */
+.card-product-dark {
+  background-color: #333;
+  color: white;
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1); /* Sombra clara no modo escuro */
+}
+
+/* Efeitos de hover no card */
 .card-product:hover {
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Efeito de sombra ao passar o mouse */
 }
 
-/* Carousel Styles */
+/* Estilo para o carrossel de imagens */
 .carousel-container {
   position: relative;
 }
@@ -27,12 +36,18 @@
 
 .main-image {
   width: 100%;
-  max-width: 300px; /* Tamanho fixo */
-  height: 300px; /* Tamanho fixo */
-  object-fit: cover; /* Para ajustar as imagens mantendo o aspecto */
+  max-width: 300px;
+  height: 300px;
+  object-fit: cover;
   border-radius: 10px;
+  transition: transform 0.3s ease; /* Transição suave ao passar o mouse */
 }
 
+.carousel-main-image:hover .main-image {
+  transform: scale(1.05); /* Leve zoom quando o mouse passa sobre a imagem */
+}
+
+/* Estilo das setas do carrossel */
 .carousel-arrow {
   background: none;
   border: none;
@@ -43,8 +58,14 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 1;
+  transition: color 0.3s ease;
 }
 
+.carousel-arrow:hover {
+  color: #007bff; /* Cor de destaque ao passar o mouse */
+}
+
+/* Setas de navegação */
 .prev {
   left: -10px;
 }
@@ -53,6 +74,7 @@
   right: -10px;
 }
 
+/* Miniaturas do carrossel */
 .carousel-thumbnails {
   display: flex;
   justify-content: center;
@@ -65,7 +87,7 @@
   margin: 0 5px;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, transform 0.3s ease; /* Transição suave ao clicar */
 }
 
 .thumbnail img {
@@ -75,11 +97,15 @@
   border-radius: 5px;
 }
 
-.thumbnail.active {
-  border-color: black;
+.thumbnail:hover {
+  transform: scale(1.1); /* Aumenta a miniatura ao passar o mouse */
 }
 
-/* Product Details */
+.thumbnail.active {
+  border-color: #007bff; /* Cor de borda ao selecionar a miniatura */
+}
+
+/* Estilos dos detalhes do produto */
 .product-details {
   text-align: center;
   margin-top: 20px;
@@ -88,6 +114,7 @@
 .product-title {
   font-size: 20px;
   margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .size-selector {
@@ -102,14 +129,19 @@
   background-color: white;
   padding: 5px 10px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .size-option.selected {
-  background-color: black;
+  background-color: #007bff;
   color: white;
 }
 
+.size-option:hover {
+  background-color: #f0f0f0; /* Cor de hover para tamanho */
+}
+
+/* Seção de quantidade */
 .quantity-section {
   display: flex;
   align-items: center;
@@ -124,13 +156,14 @@
   background: none;
   font-size: 20px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .quantity-button:hover {
-  background-color: #f0f0f0;
+  background-color: #f0f0f0; /* Efeito de hover para os botões de quantidade */
 }
 
+/* Campo de input de quantidade */
 .quantity-input {
   width: 50px;
   text-align: center;
@@ -139,11 +172,14 @@
   margin: 0 5px;
 }
 
+/* Preço do produto */
 .product-price {
   font-size: 18px;
   font-weight: bold;
+  color: #007bff;
 }
 
+/* Botões de ação */
 .buttons {
   display: flex;
   justify-content: center;
@@ -151,30 +187,73 @@
   margin-top: 10px;
 }
 
+/* Botão de favoritar */
 .favorite-button {
   background: none;
   border: none;
   font-size: 24px;
   cursor: pointer;
   color: black;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
 
 .favorite-button.favorited {
   color: red;
 }
 
+.favorite-button:hover {
+  color: #007bff; /* Cor de destaque ao passar o mouse */
+}
+
+/* Botão de compra */
 .buy-button {
-  background-color: green;
+  background-color: #007bff;
   color: white;
   padding: 8px 15px;
   border: none;
   cursor: pointer;
   border-radius: 5px;
   font-size: 16px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .buy-button:hover {
-  background-color: darkgreen;
+  background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+}
+
+/* Estilo no modo escuro */
+.card-product-dark .favorite-button {
+  color: white; /* Cor do ícone de favoritar no modo escuro */
+}
+
+.card-product-dark .favorite-button.favorited {
+  color: red; /* Cor do ícone de favoritar no modo escuro */
+}
+
+.card-product-dark .product-title {
+  color: #dcdcdc; /* Título do produto no modo escuro */
+}
+
+.card-product-dark .buy-button {
+  background-color: #007bff;
+}
+
+.card-product-dark .buy-button:hover {
+  background-color: #0056b3;
+}
+
+/* Tamanho da fonte e bordas para o modo escuro */
+.card-product-dark .size-option {
+  border-color: #555;
+  background-color: #444;
+  color: white;
+}
+
+.card-product-dark .size-option.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+.card-product-dark .quantity-button:hover {
+  background-color: #555;
 }

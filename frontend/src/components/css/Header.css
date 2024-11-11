@@ -1,0 +1,114 @@
+/* Estilos para o Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: var(--header-background-color);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;  /* Bordas arredondadas para um visual mais suave */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  /* Sombra sutil */
+}
+
+.header-dark {
+  background-color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.header-logo img {
+  width: 180px; /* Ajusta o tamanho da logo */
+  height: 60px;
+  object-fit: contain;
+}
+
+/* Estilos para os ícones no header */
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.icon {
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s ease; /* Suaviza a transição de cor */
+}
+
+.icon:hover {
+  color: var(--icon-hover-color);  /* Para aplicar uma cor de hover nos ícones */
+}
+
+.dark-mode-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--icon-color);
+  transition: color 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+  color: var(--icon-hover-color);
+}
+
+/* Cores para o modo escuro */
+.header-dark .dark-mode-toggle {
+  color: white;
+}
+
+.header-dark .icon {
+  color: white;
+}
+
+.user-menu {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  color: inherit;
+  font-weight: bold;
+}
+
+.user-initials {
+  background-color: #ccc;
+  border-radius: 50%;
+  padding: 8px;
+  text-align: center;
+  font-size: 1.2rem;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  display: none; /* Inicialmente escondido */
+  position: absolute;
+  top: 7%; /* Posiciona o dropdown abaixo do botão */
+  left: 88%;
+  background-color: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 9999; /* Assegura que o dropdown apareça sobre outros elementos */
+  width: 120px;
+  border-radius: 8px;
+  margin-top: 8px; /* Adiciona um pequeno espaço entre o botão e o dropdown */
+}
+
+.dropdown-menu.show {
+  display: block;  /* Exibe o menu quando a classe 'show' é adicionada */
+}
+
+.dropdown-menu button {
+  padding: 10px;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1rem;
+  color: black;
+  border-radius: 8px; /* Bordas arredondadas */
+}
+
+.dropdown-menu button:hover {
+  background-color: #f0f0f0;
+}

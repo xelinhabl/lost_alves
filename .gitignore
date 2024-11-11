@@ -2,3 +2,4 @@
 venv/
 frontend/node_modules/
 venv/node_modules/
+backend/api/
