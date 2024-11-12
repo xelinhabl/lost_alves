@@ -1,13 +1,12 @@
-// src/App.js
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-// Importação do ThemeProvider e dos componentes
+// Importação do ThemeProvider, UserProvider e dos componentes
 import { ThemeProvider } from './context/ThemeContext';
 import CardProducts from './components/CardProducts';
 import Register from './components/Register';
-import Login from './components/Login'; // Certifique-se de que o Login está importado corretamente
+import Login from './components/Login';
+import Profile from './components/Profile'; // Importação do Profile
 import Header from './components/Header';
 import { UserProvider } from './context/UserContext';
 
@@ -23,8 +22,8 @@ const App = () => {
           <Routes>
             <Route path="/" element={<CardProducts />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} /> {/* Adicionando a rota para Login */}
-            {/* Adicione novas rotas aqui conforme necessário */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/profile" element={<Profile />} /> {/* Adicionando a rota para Profile */}
           </Routes>
         </Router>
       </UserProvider>

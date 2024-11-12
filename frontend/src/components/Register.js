@@ -18,17 +18,37 @@ const Register = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false); // Estado de carregamento
-
   const [isRegistering, setIsRegistering] = useState(false); // Controla a exibição do formulário ou dos botões
+  const [countdown, setCountdown] = useState(5); // Contador de 5 segundos
+  const [loadingDuringCountdown, setLoadingDuringCountdown] = useState(false); // Novo estado para exibir o loading abaixo da contagem
 
   // Verifica se há token de acesso ao carregar o componente
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
     if (accessToken) {
       // Se o token de acesso existir, redireciona para o lobby de compras
-      navigate('/register');
+      navigate('/');
     }
   }, [navigate]);
+
+  // Controla o contador de 5 segundos após o registro
+  useEffect(() => {
+    if (success) {
+      const countdownInterval = setInterval(() => {
+        setCountdown((prevCountdown) => {
+          if (prevCountdown <= 1) {
+            clearInterval(countdownInterval);
+            setLoadingDuringCountdown(false); // Para de mostrar o loading quando a contagem termina
+            navigate('/'); // Redireciona para a página inicial após 5 segundos
+          }
+          return prevCountdown - 1;
+        });
+      }, 1000);
+      setLoadingDuringCountdown(true); // Começa a exibir o loading quando o sucesso for alcançado
+
+      return () => clearInterval(countdownInterval); // Limpa o intervalo quando o componente for desmontado ou o contador for finalizado
+    }
+  }, [success, navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -45,9 +65,9 @@ const Register = () => {
     try {
       const response = await axios.post('http://localhost:8000/register/', formData);
       if (response.status === 201) {
-        setSuccess(true);
-        setFormData({ username: '', email: '', password: '' });
-  
+        setSuccess(true); // Define sucesso como true
+        setFormData({ username: '', email: '', password: '' }); // Limpa os campos do formulário
+
         // Armazena os dados do usuário no localStorage
         const user = {
           name: formData.username,
@@ -65,11 +85,6 @@ const Register = () => {
           const { access, refresh } = loginResponse.data;
           localStorage.setItem('access_token', access); // Armazena o token de acesso
           localStorage.setItem('refresh_token', refresh); // Armazena o token de refresh
-          
-          // Redireciona para o lobby de compras após 5 segundos
-          setTimeout(() => {
-            navigate('/');
-          }, 5000);
         }
       }
     } catch (error) {
@@ -92,7 +107,9 @@ const Register = () => {
       {success ? (
         <>
           <FaCheckCircle className="success-icon" />
-          <p className="success-message">Usuário criado com sucesso! Você será redirecionado ao lobby de compras em breve.</p>
+          <p className="success-message">Usuário criado com sucesso!</p>
+          <p>Você será redirecionado ao lobby de compras em {countdown}...</p>
+          {loadingDuringCountdown && <FaSpinner className="loading-spinner" />} {/* Ícone de carregamento abaixo */}
         </>
       ) : isRegistering ? (
         <>

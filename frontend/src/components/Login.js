@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './css/Login.css';
-import { FaSpinner } from 'react-icons/fa';
+import { FaSpinner, FaCheckCircle } from 'react-icons/fa'; // Ícones de sucesso e carregamento
 import { useTheme } from '../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
@@ -21,6 +21,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [userData, setUserData] = useState(null);
+  const [countdown, setCountdown] = useState(5); // Contagem regressiva
+  const [loadingDuringCountdown, setLoadingDuringCountdown] = useState(false); // Controla o spinner durante a contagem regressiva
 
   // Verificar se o usuário já está logado (token existe)
   useEffect(() => {
@@ -61,9 +63,22 @@ const Login = () => {
 
         setSuccess(true); // Definir sucesso como true após login bem-sucedido
         setMessage('Aguarde, você será redirecionado ao lobby de compras');
-        
+
         // Atualiza o contexto com os dados do usuário
         updateUser(user);
+
+        // Iniciar a contagem regressiva de 5 segundos
+        const countdownInterval = setInterval(() => {
+          setCountdown((prevCountdown) => {
+            if (prevCountdown <= 1) {
+              clearInterval(countdownInterval);
+              setLoadingDuringCountdown(false); // Para de mostrar o loading quando a contagem termina
+              navigate('/'); // Redireciona para a página inicial após 5 segundos
+            }
+            return prevCountdown - 1;
+          });
+        }, 1000);
+        setLoadingDuringCountdown(true); // Começa a exibir o loading quando o sucesso for alcançado
       }
     } catch (err) {
       setError('Credenciais incorretas. Tente novamente!');
@@ -103,32 +118,22 @@ const Login = () => {
 
   const getInitials = (name) => {
     if (!name) return "N/A";  // Retorna "N/A" se o nome for undefined ou vazio
-  
     const nameParts = name.split(' ');
     return nameParts.length > 1
       ? `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`.toUpperCase()
       : nameParts[0].substring(0, 2).toUpperCase();  // Retorna as iniciais ou as duas primeiras letras
   };
 
-  // Redirecionar após o login bem-sucedido (5 segundos)
-  useEffect(() => {
-    if (success) {
-      const timeout = setTimeout(() => {
-        navigate('/'); // Redireciona para a página inicial após 5 segundos
-      }, 5000);
-
-      // Limpar timeout quando o componente for desmontado ou sucesso for alterado
-      return () => clearTimeout(timeout);
-    }
-  }, [success, navigate]);
-
   return (
     <div className={`login-container ${darkMode ? 'dark-mode' : ''}`}>
       {userData ? (
-        <div>
-          <p className="success-message">Logado com Sucesso ! Aguarde </p>
+        <>
+          <FaCheckCircle className="success-icon" />
+          <p className="success-message">Logado com Sucesso!</p>
           <p>{message}</p>
-        </div>
+          <p>Redirecionando em {countdown}...</p> {/* Exibe a contagem regressiva */}
+          {loadingDuringCountdown && <FaSpinner className="loading-spinner" />} {/* Exibe o ícone de carregamento */}
+        </>
       ) : (
         <>
           <h2>Login</h2>

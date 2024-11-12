@@ -1,0 +1,209 @@
+/* Container Principal */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: var(--background-color);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.profile-container h2,
+.profile-container h3 {
+  color: var(--text-heading-color);
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+
+/* Avatar Section */
+.avatar-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.avatar-upload label {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.avatar-preview {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 1rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Address Form */
+.address-form {
+  width: 100%;
+  margin-bottom: 1.2rem;
+}
+
+.address-form label {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.address-form input[type="text"],
+.address-form input[type="file"],
+.address-form input[type="checkbox"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  color: var(--input-text-color);
+  background-color: var(--input-background-color);
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.address-form input.input-dark {
+  background-color: #555;
+  color: white;
+  border: 1px solid #888;
+}
+
+.address-form .address-number,
+.address-form .address-complement {
+  display: inline-block;
+  width: 48%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  color: var(--input-text-color);
+  background-color: var(--input-background-color);
+}
+
+/* Botão de Ação no Formulário */
+.address-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--button-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.address-form button:hover {
+  background-color: var(--button-hover-color);
+}
+
+/* Address List */
+.address-list {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.address-item {
+  background-color: var(--input-background-color);
+  padding: 0.8rem;
+  border-radius: 4px;
+  margin-bottom: 0.8rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.address-item p {
+  margin: 0.2rem 0;
+  color: var(--text-color);
+}
+
+.address-item button {
+  padding: 6px 10px;
+  margin-top: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.address-item button:nth-child(1) {
+  background-color: var(--button-color);
+}
+
+.address-item button:nth-child(2) {
+  background-color: #e74c3c;
+}
+
+.address-item button:hover {
+  opacity: 0.9;
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+/* Dark Mode */
+.profile-container.dark-mode {
+  --background-color: #333;
+  --text-color: #f5f5f5;
+  --input-background-color: #444;
+  --input-text-color: #f5f5f5;
+  --button-color: #4CAF50;
+  --button-hover-color: #45a049;
+}
+
+.avatar-upload label,
+.address-form label {
+  color: var(--text-color);
+}
+
+.address-item.dark-mode {
+  background-color: #555;
+}
+
+/* Dark Mode para Inputs */
+.input-dark {
+  background-color: #555;
+  color: #fff;
+  border: 1px solid #666;
+}
+
+/* Botão de Adicionar Endereço */
+.add-address-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--button-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.add-address-btn:hover {
+  background-color: var(--button-hover-color);
+}
