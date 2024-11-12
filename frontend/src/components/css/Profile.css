@@ -11,18 +11,45 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   color: var(--text-color);
   font-family: Arial, sans-serif;
-  text-align: center;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.profile-container h2,
-.profile-container h3 {
-  color: var(--text-heading-color);
-  margin-bottom: 1rem;
-  font-size: 1.4rem;
+/* Cabeçalho com Avatar e Informações do Usuário */
+.profile-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  text-align: left;
 }
 
-/* Avatar Section */
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-info h2 {
+  font-size: 1.6rem;
+  color: var(--text-heading-color);
+  margin: 0;
+}
+
+.user-info p {
+  font-size: 1rem;
+  color: var(--text-subheading-color);
+  margin-top: 4px;
+  font-weight: 300;
+}
+
+/* Avatar Upload Section */
 .avatar-upload {
   display: flex;
   flex-direction: column;
@@ -46,10 +73,16 @@
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Address Form */
+/* Formulário de Endereço */
 .address-form {
   width: 100%;
   margin-bottom: 1.2rem;
+}
+
+.address-form h3 {
+  color: var(--text-heading-color);
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
 }
 
 .address-form label {
@@ -76,12 +109,6 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.address-form input.input-dark {
-  background-color: #555;
-  color: white;
-  border: 1px solid #888;
-}
-
 .address-form .address-number,
 .address-form .address-complement {
   display: inline-block;
@@ -94,8 +121,14 @@
   background-color: var(--input-background-color);
 }
 
-/* Botão de Ação no Formulário */
-.address-form button {
+.address-form input.input-dark {
+  background-color: #555;
+  color: white;
+  border: 1px solid #888;
+}
+
+/* Botão de Adicionar Endereço */
+.add-address-btn {
   width: 100%;
   padding: 10px;
   background-color: var(--button-color);
@@ -105,15 +138,15 @@
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 8px;
+  margin-top: 10px;
   transition: background-color 0.3s ease;
 }
 
-.address-form button:hover {
+.add-address-btn:hover {
   background-color: var(--button-hover-color);
 }
 
-/* Address List */
+/* Lista de Endereços Salvos */
 .address-list {
   width: 100%;
   margin-top: 1rem;
@@ -133,6 +166,16 @@
   color: var(--text-color);
 }
 
+.address-item .default-tag {
+  background-color: #4CAF50;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-top: 4px;
+  display: inline-block;
+}
+
 .address-item button {
   padding: 6px 10px;
   margin-top: 0.5rem;
@@ -143,13 +186,14 @@
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-right: 8px;
 }
 
-.address-item button:nth-child(1) {
+.address-item button.set-default {
   background-color: var(--button-color);
 }
 
-.address-item button:nth-child(2) {
+.address-item button.remove-address {
   background-color: #e74c3c;
 }
 
@@ -157,7 +201,7 @@
   opacity: 0.9;
 }
 
-/* Error Message */
+/* Mensagem de Erro */
 .error-message {
   color: red;
   font-size: 0.8rem;
@@ -183,27 +227,8 @@
   background-color: #555;
 }
 
-/* Dark Mode para Inputs */
 .input-dark {
   background-color: #555;
   color: #fff;
   border: 1px solid #666;
-}
-
-/* Botão de Adicionar Endereço */
-.add-address-btn {
-  width: 100%;
-  padding: 10px;
-  background-color: var(--button-color);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 10px;
-}
-
-.add-address-btn:hover {
-  background-color: var(--button-hover-color);
 }

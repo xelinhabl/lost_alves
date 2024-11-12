@@ -9,7 +9,13 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view
 from django.contrib.auth import get_user_model
-
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from .serializers import UserProfileSerializer  
 
 # Register view para criação de usuário
 class RegisterUserView(APIView):
@@ -52,32 +58,48 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                 }
         return response
 
+# Customização da view de login
 @api_view(['POST'])
 def login_view(request):
     email = request.data.get('email')
     password = request.data.get('password')
 
+    # Valida os campos de entrada
     if not email or not password:
         return Response({"error": "Por favor, forneça o email e a senha."}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Buscar o usuário pelo email e autenticar com a senha
+    # Busca o usuário pelo email e tenta autenticar com a senha
     try:
         user = get_user_model().objects.get(email=email)
         user = authenticate(request, username=user.username, password=password)
     except get_user_model().DoesNotExist:
         user = None
 
+    # Verifica se o usuário foi autenticado com sucesso
     if user is not None:
+        # Cria os tokens JWT (access e refresh)
         refresh = RefreshToken.for_user(user)
         access_token = refresh.access_token
         
+        # Retorna a resposta com os tokens e dados do usuário
         return Response({
             'refresh': str(refresh),
             'access': str(access_token),
             'user': {
                 'username': user.username,
-                'email': user.email
+                'email': user.email,
+                'name': user.get_full_name()  # Se houver nome completo configurado no User
             }
         }, status=status.HTTP_200_OK)
     else:
         return Response({"error": "Credenciais inválidas."}, status=status.HTTP_401_UNAUTHORIZED)
+    
+class ProfileView(APIView):
+    class ProfileView(APIView):
+        authentication_classes = [JWTAuthentication]
+        permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserProfileSerializer(user)  # Serializa o usuário autenticado
+        return Response(serializer.data)  # Retorna os dados serializados

@@ -6,7 +6,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import CardProducts from './components/CardProducts';
 import Register from './components/Register';
 import Login from './components/Login';
-import Profile from './components/Profile'; // Importação do Profile
+import Profile from './components/Profile';
 import Header from './components/Header';
 import { UserProvider } from './context/UserContext';
 
