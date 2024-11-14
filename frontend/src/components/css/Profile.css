@@ -23,17 +23,50 @@
   text-align: left;
 }
 
-.avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+/* Avatar Section */
+.avatar-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
 }
 
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #ddd;
+  transition: transform 0.3s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+}
+
+/* Ícone de Câmera para Upload de Avatar */
+.camera-icon-container {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.6); /* Discreto no avatar */
+  border-radius: 50%;
+  padding: 4px; /* Reduzido para tamanho menor */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Borda bem fina e sutil */
+}
+
+.camera-icon {
+  font-size: 14px; /* Reduzido para menor destaque */
+  color: white;
+}
+
+/* Informações do Usuário */
 .user-info {
   flex: 1;
+  margin-left: 1rem; /* Espaçamento entre avatar e informações do usuário */
 }
 
 .user-info h2 {
@@ -45,32 +78,8 @@
 .user-info p {
   font-size: 1rem;
   color: var(--text-subheading-color);
-  margin-top: 4px;
+  margin-top: 8px; /* Maior espaçamento entre nome e e-mail */
   font-weight: 300;
-}
-
-/* Avatar Upload Section */
-.avatar-upload {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.avatar-upload label {
-  font-size: 0.9rem;
-  margin-bottom: 0.4rem;
-  font-weight: bold;
-  color: var(--text-color);
-}
-
-.avatar-preview {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-top: 1rem;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Formulário de Endereço */
@@ -107,18 +116,6 @@
   background-color: var(--input-background-color);
   box-sizing: border-box;
   transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.address-form .address-number,
-.address-form .address-complement {
-  display: inline-block;
-  width: 48%;
-  padding: 8px;
-  margin-top: 5px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  color: var(--input-text-color);
-  background-color: var(--input-background-color);
 }
 
 .address-form input.input-dark {
@@ -166,7 +163,7 @@
   color: var(--text-color);
 }
 
-.address-item .default-tag {
+.default-tag {
   background-color: #4CAF50;
   color: white;
   font-size: 0.75rem;
@@ -176,6 +173,7 @@
   display: inline-block;
 }
 
+/* Estilos Comuns para Todos os Botões dentro de .address-item */
 .address-item button {
   padding: 6px 10px;
   margin-top: 0.5rem;
@@ -183,18 +181,46 @@
   border-radius: 4px;
   font-size: 0.85rem;
   font-weight: bold;
-  color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-right: 8px;
 }
 
-.address-item button.set-default {
-  background-color: var(--button-color);
+/* Primeiro Botão: Definir como Padrão */
+.address-item button:first-of-type {
+  background-color: #4CAF50; /* Verde */
+  color: black; /* Texto preto para White Mode */
 }
 
-.address-item button.remove-address {
-  background-color: #e74c3c;
+.profile-container.dark-mode .address-item button:first-of-type {
+  color: black; /* Texto preto para Dark Mode */
+}
+
+/* Segundo Botão: Remover */
+.address-item button:nth-of-type(2) {
+  background-color: #e74c3c; /* Vermelho */
+  color: black; /* Texto preto para White Mode */
+}
+
+.profile-container.dark-mode .address-item button:nth-of-type(2) {
+  color: black; /* Texto preto para Dark Mode */
+}
+
+/* Botão de Definir como Padrão em Verde */
+.set-default {
+  background-color: #4CAF50; /* Verde */
+}
+
+.set-default:hover {
+  background-color: #388e3c; /* Verde mais escuro ao passar o mouse */
+}
+
+.remove-address {
+  background-color: #e74c3c; /* Vermelho */
+}
+
+.remove-address:hover {
+  background-color: #c0392b; /* Vermelho mais escuro ao passar o mouse */
 }
 
 .address-item button:hover {
@@ -218,17 +244,6 @@
   --button-hover-color: #45a049;
 }
 
-.avatar-upload label,
-.address-form label {
-  color: var(--text-color);
-}
-
 .address-item.dark-mode {
   background-color: #555;
-}
-
-.input-dark {
-  background-color: #555;
-  color: #fff;
-  border: 1px solid #666;
 }

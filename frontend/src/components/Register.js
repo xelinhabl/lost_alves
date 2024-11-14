@@ -26,8 +26,7 @@ const Register = () => {
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
     if (accessToken) {
-      // Se o token de acesso existir, redireciona para o lobby de compras
-      navigate('/');
+      navigate('/'); // Somente navega se o token de acesso existir
     }
   }, [navigate]);
 
@@ -61,26 +60,26 @@ const Register = () => {
     e.preventDefault();
     setLoading(true); // Ativa o estado de carregamento
     setError(null); // Reseta os erros ao submeter o formulário
-
+  
     try {
       const response = await axios.post('http://localhost:8000/register/', formData);
       if (response.status === 201) {
         setSuccess(true); // Define sucesso como true
         setFormData({ username: '', email: '', password: '' }); // Limpa os campos do formulário
-
+  
         // Armazena os dados do usuário no localStorage
         const user = {
           name: formData.username,
           email: formData.email,
         };
         localStorage.setItem('user', JSON.stringify(user));
-
+  
         // Login automático após o registro
         const loginResponse = await axios.post('http://localhost:8000/login/', {
           email: formData.email,
           password: formData.password,
         });
-
+  
         if (loginResponse.status === 200) {
           const { access, refresh } = loginResponse.data;
           localStorage.setItem('access_token', access); // Armazena o token de acesso
@@ -88,11 +87,17 @@ const Register = () => {
         }
       }
     } catch (error) {
-      setError('Erro ao registrar o usuário');
+      // Exibe a mensagem de erro detalhada
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error); // Exibe a mensagem de erro retornada do backend
+      } else {
+        setError('Erro ao registrar o usuário'); // Mensagem padrão
+      }
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleLoginClick = () => {
     navigate('/login'); // Navega para a página de login

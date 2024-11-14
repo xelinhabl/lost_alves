@@ -4,23 +4,18 @@ import './css/Header.css';
 import { FaShoppingCart, FaUserCircle, FaSun, FaMoon } from 'react-icons/fa';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useUser } from '../context/UserContext'; // Importando o contexto do usuário
+import axios from 'axios';
 
 const Header = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const navigate = useNavigate();
   const { user, updateUser } = useUser(); // Consome o contexto de usuário
-  const location = useLocation();  // Hook para detectar a mudança de rota
+  const location = useLocation(); // Hook para detectar a mudança de rota
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Estado para controlar o dropdown
   const dropdownRef = useRef(null); // Referência para o menu dropdown
-  const userButtonRef = useRef(null); // Referência para o botão das iniciais do usuário
-
-  // Função para extrair as iniciais do nome do usuário
-  const getInitials = (name) => {
-    if (!name) return 'NN'; // Retorna 'NN' se o nome não estiver disponível
-    const nameParts = name.split(' ');
-    return `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`.toUpperCase();
-  };
+  const userButtonRef = useRef(null); // Referência para o botão do avatar
+  const [avatar, setAvatar] = useState(user?.avatar || ''); // Estado local para armazenar o avatar atualizado
 
   // Alterna a exibição do menu dropdown
   const toggleDropdown = (e) => {
@@ -54,23 +49,24 @@ const Header = () => {
     const accessToken = localStorage.getItem('access_token');
     if (accessToken) {
       // Se o token de acesso existir, redireciona para o perfil
-      navigate('/');
+      navigate('/profile');
     } else {
       // Se não existir, redireciona para a página de login
       navigate('/register');
     }
   };
 
-  // Usando o useEffect para detectar mudanças na URL
+  // Usando o useEffect para detectar mudanças na URL e atualizar o contexto de usuário
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
     if (accessToken) {
       const storedUser = JSON.parse(localStorage.getItem('user'));
-      updateUser(storedUser);  // Atualiza o contexto com os dados do usuário
+      updateUser(storedUser); // Atualiza o contexto com os dados do usuário
+      setAvatar(storedUser?.avatar || ''); // Atualiza o avatar no estado local
     } else {
       updateUser(null); // Se não estiver logado, limpa o contexto de usuário
     }
-  }, [location, updateUser]);  // O efeito será acionado sempre que a localização mudar
+  }, [location, updateUser]); // O efeito será acionado sempre que a localização mudar
 
   // useEffect para fechar o dropdown ao clicar fora
   useEffect(() => {
@@ -79,6 +75,31 @@ const Header = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  // Função para buscar e atualizar o avatar
+  const fetchAvatar = async () => {
+    const token = localStorage.getItem('access_token');
+    if (!token) return;
+
+    try {
+      const response = await axios.get('http://localhost:8000/profile/avatar/', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.data && response.data.avatar_url) {
+        setAvatar(response.data.avatar_url);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar avatar', error);
+    }
+  };
+
+  // Chama o fetchAvatar sempre que o usuário mudar ou o token for encontrado
+  useEffect(() => {
+    if (user) {
+      fetchAvatar(); // Chama a função ao carregar o componente
+    }
+  }, [user]);
 
   return (
     <header className={`header ${darkMode ? 'header-dark' : ''}`}>
@@ -103,12 +124,24 @@ const Header = () => {
         {/* Ícone do usuário - ao clicar verifica o token */}
         <div>
           {user ? (
+            // Se o usuário tem avatar, exibe a foto. Caso contrário, exibe o ícone padrão.
             <button 
-              className="user-initials" 
+              className="user-avatar" 
               onClick={toggleDropdown} 
-              ref={userButtonRef}  // Adiciona referência para o botão das iniciais
+              ref={userButtonRef}  // Adiciona referência para o botão do avatar
             >
-              {getInitials(user.name)} {/* Exibe as iniciais do usuário */}
+              {avatar ? (
+                <img 
+                  src={'http://127.0.0.1:8000/' + avatar}  // Avatar do usuário
+                  alt="Avatar" 
+                  className="avatar-img" 
+                />
+              ) : (
+                <FaUserCircle 
+                  className="icon" 
+                  style={{ color: darkMode ? 'white' : 'black' }} 
+                />
+              )}
             </button>
           ) : (
             <FaUserCircle

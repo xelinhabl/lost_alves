@@ -1,9 +1,12 @@
 from django.urls import path
-from .views import RegisterUserView, CustomTokenObtainPairView, login_view, ProfileView
+from .views import RegisterUserView, CustomTokenObtainPairView, ProfileView, UpdateAvatarView, AddressView, AddressDetailView, login_view 
 
 urlpatterns = [
     path('register/', RegisterUserView.as_view(), name='register'),
-    path('login/', login_view, name='login'),  # Rota personalizada para login
-    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),  # Rota de obtenção do token JWT
+    path('login/', login_view, name='login'),
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'), 
     path('profile/', ProfileView.as_view(), name='user-profile'),
+    path('profile/avatar/', UpdateAvatarView.as_view(), name='update_avatar'),
+    path('profile/addresses/', AddressView.as_view(), name='address-list-create'),  # Rota para listar/adicionar
+    path('profile/addresses/<int:id>/', AddressDetailView.as_view(), name='address-detail'),  # Excluir endereço
 ]
