@@ -62,6 +62,7 @@
   color: white;
 }
 
+/* Menu de usuário */
 .user-menu {
   position: relative;
   display: inline-flex;
@@ -148,4 +149,25 @@
 
 .dropdown-menu button:hover {
   background-color: #f0f0f0;
+}
+
+/* Botão de adicionar produto */
+.add-product-button {
+  background-color: var(--button-color); /* Variável para consistência */
+  color: white;
+  border: none;
+  padding: 12px 16px; /* Alinhado com outros botões */
+  margin: 10px 0; /* Margem para integração com elementos */
+  border-radius: 5px; /* Bordas consistentes */
+  font-size: 16px; /* Alinhamento de tipografia */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Efeitos suaves */
+}
+
+.add-product-button:hover {
+  background-color: var(--button-hover-color); /* Hover padrão */
+}
+
+.add-product-button:active {
+  transform: scale(0.98); /* Feedback ao clique */
 }

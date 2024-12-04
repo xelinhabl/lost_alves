@@ -7,7 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view
 from .models import Address
-from .serializers import UserProfileSerializer, AvatarSerializer, AddressSerializer
+from .serializers import UserProfileSerializer, AvatarSerializer, AddressSerializer, ProductSerializer
 from rest_framework import generics
 
 User = get_user_model()  # Sempre use essa abordagem para garantir que o modelo correto seja referenciado.
@@ -51,7 +51,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                 }
         return response
 
-# Customização da view de login
 @api_view(['POST'])
 def login_view(request):
     email = request.data.get('email')
@@ -75,7 +74,8 @@ def login_view(request):
             'user': {
                 'username': user.username,
                 'email': user.email,
-                'name': user.get_full_name()
+                'name': user.get_full_name(),
+                'is_superuser': user.is_superuser  # Inclui o status de superusuário
             }
         }, status=status.HTTP_200_OK)
     else:
@@ -154,3 +154,21 @@ class AddressDetailView(APIView):
         
         address.delete()  # Deleta o endereço
         return Response({"message": "Endereço excluído com sucesso."}, status=status.HTTP_204_NO_CONTENT)
+    
+class AddProductView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        """
+        Adiciona um novo produto ao sistema. O usuário autenticado será atribuído automaticamente como o proprietário.
+        """
+        # Passa o contexto de request para o serializador
+        serializer = ProductSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            # Salva o produto e o associa ao usuário autenticado
+            product = serializer.save()
+            return Response({
+                "message": "Produto adicionado com sucesso!",
+                "product": serializer.data
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

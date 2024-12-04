@@ -59,6 +59,9 @@ const Login = () => {
         // Store user data (e.g., name) for use in the avatar
         localStorage.setItem('user', JSON.stringify(user)); // Save user data to localStorage
 
+        // Salvar também o status de superusuário
+        localStorage.setItem('is_superuser', user.is_superuser);
+
         setUserData(user);
 
         setSuccess(true); // Definir sucesso como true após login bem-sucedido
@@ -100,6 +103,7 @@ const Login = () => {
           localStorage.removeItem('access_token');
           localStorage.removeItem('refresh_token');
           localStorage.removeItem('user');
+          localStorage.removeItem('is_superuser'); // Remover o status de superusuário
           setUserData(null); // Atualiza o estado do usuário
           updateUser(null);  // Limpa o contexto de usuário
           navigate('/login'); // Redireciona para a página de login

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import './css/Header.css';
-import { FaShoppingCart, FaUserCircle, FaSun, FaMoon } from 'react-icons/fa';
+import { FaShoppingCart, FaUserCircle, FaSun, FaMoon, FaPlus } from 'react-icons/fa'; // Importando FaPlus
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useUser } from '../context/UserContext'; // Importando o contexto do usuário
 import axios from 'axios';
@@ -121,10 +121,20 @@ const Header = () => {
           style={{ color: darkMode ? 'white' : 'black' }} 
         />
         
+        {/* Botão de Adicionar Produtos - visível apenas para superusuário/admin */}
+        {user?.is_superuser || user?.is_admin ? (
+          <button 
+            onClick={() => navigate('/add-product')} 
+            className="add-product-button"
+            title="Cadastrar produtos"  // Tooltip
+          >
+            <FaPlus className="add-product-icon" />
+          </button>
+        ) : null}
+
         {/* Ícone do usuário - ao clicar verifica o token */}
         <div>
           {user ? (
-            // Se o usuário tem avatar, exibe a foto. Caso contrário, exibe o ícone padrão.
             <button 
               className="user-avatar" 
               onClick={toggleDropdown} 

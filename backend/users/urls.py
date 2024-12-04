@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterUserView, CustomTokenObtainPairView, ProfileView, UpdateAvatarView, AddressView, AddressDetailView, login_view 
+from .views import RegisterUserView, CustomTokenObtainPairView, ProfileView, UpdateAvatarView, AddressView, AddressDetailView, login_view, AddProductView
 
 urlpatterns = [
     path('register/', RegisterUserView.as_view(), name='register'),
@@ -9,4 +9,5 @@ urlpatterns = [
     path('profile/avatar/', UpdateAvatarView.as_view(), name='update_avatar'),
     path('profile/addresses/', AddressView.as_view(), name='address-list-create'),  # Rota para listar/adicionar
     path('profile/addresses/<int:id>/', AddressDetailView.as_view(), name='address-detail'),  # Excluir endereço
+    path('products/add/', AddProductView.as_view(), name='add-product'),
 ]
