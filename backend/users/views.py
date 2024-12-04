@@ -7,7 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view
 from .models import Address
-from .serializers import UserProfileSerializer, AvatarSerializer, AddressSerializer, ProductSerializer
+from .serializers import UserProfileSerializer, AvatarSerializer, AddressSerializer, ProductSerializer, Product
 from rest_framework import generics
 
 User = get_user_model()  # Sempre use essa abordagem para garantir que o modelo correto seja referenciado.
@@ -171,4 +171,17 @@ class AddProductView(APIView):
                 "message": "Produto adicionado com sucesso!",
                 "product": serializer.data
             }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ProductListCreateView(APIView):
+    def get(self, request):
+        products = Product.objects.all()
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

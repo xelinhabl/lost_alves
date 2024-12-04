@@ -1,132 +1,246 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '../context/ThemeContext'; // Certifique-se de que o caminho está correto
+import { useTheme } from '../context/ThemeContext';
 import './css/CardProducts.css';
+import axios from 'axios';
 
 const CardProducts = () => {
-  const { darkMode } = useTheme(); // Acessando o contexto de tema
-  const [isFavorited, setIsFavorited] = useState(false);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [quantity, setQuantity] = useState(1);
-  const [size, setSize] = useState(null);
-  const [images, setImages] = useState([]);
-  const [productTitle, setProductTitle] = useState('');
+  const { darkMode } = useTheme();
+  const [isFavorited, setIsFavorited] = useState({});
+  const [selectedImageIndex, setSelectedImageIndex] = useState({});
+  const [quantity, setQuantity] = useState({});
+  const [size, setSize] = useState({});
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
 
-  // Mover a função loadImages para dentro do useEffect para evitar o warning
-  useEffect(() => {
-    const loadImages = () => {
-      const context = require.context('../../public/products', false, /\.(png|jpe?g|svg)$/);
+  // Adicionando estado para o carrossel de banners
+  const [bannerIndex, setBannerIndex] = useState(0);
+  const banners = [
+    '/logo/banner1.webp',
+    '/logo/banner2.webp',
+  ];
 
-      // Coleta todas as imagens e organiza pelo nome do produto sem o sufixo numérico
-      const productImages = {};
-      context.keys().forEach((key) => {
-        const filename = key.replace('./', '').split('.')[0];
-        const productName = filename.replace(/\d+$/, ''); // Remove números do final do nome
-        productImages[productName] = productImages[productName] || [];
-        productImages[productName].push(context(key));
-      });
-
-      // Usar o primeiro conjunto de imagens para inicializar o componente
-      const firstProduct = Object.keys(productImages)[0];
-      setProductTitle(formatProductTitle(firstProduct));  // Formatando o nome do produto
-      setImages(productImages[firstProduct]);
-    };
-
-    // Chama a função para carregar as imagens
-    loadImages();
-  }, []);  // O array de dependências vazio faz com que a função seja chamada uma única vez
-
-  // Função para formatar o nome do produto (com split e capitalização)
-  const formatProductTitle = (title) => {
-    const formattedTitle = title.replace(/([a-z])([A-Z])/g, '$1 $2');
-    return formattedTitle.charAt(0).toUpperCase() + formattedTitle.slice(1);
+  // Função para alternar entre os banners no carrossel
+  const nextBanner = () => {
+    setBannerIndex((prevIndex) => (prevIndex + 1) % banners.length);
   };
 
-  const toggleFavorite = () => setIsFavorited(!isFavorited);
+  const prevBanner = () => {
+    setBannerIndex((prevIndex) => (prevIndex - 1 + banners.length) % banners.length);
+  };
 
-  const handleQuantityChange = (e) => {
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const token = localStorage.getItem('access_token'); // Obter o token de autenticação
+      if (!token) {
+        setError('Usuário não autenticado. Faça login para acessar os produtos.');
+        return;
+      }
+
+      try {
+        const response = await axios.get('http://localhost:8000/products/', {
+          headers: {
+            Authorization: `Bearer ${token}`, // Adiciona o token ao cabeçalho
+          },
+        });
+
+        // Atualiza o estado com todos os produtos
+        setProducts(response.data);
+
+      } catch (error) {
+        console.error('Erro ao buscar produtos:', error);
+        setError('Não foi possível carregar os produtos. Verifique sua conexão ou autenticação.');
+      }
+    };
+
+    fetchProducts();
+  }, []); // O useEffect agora é executado apenas uma vez, pois a dependência está vazia.
+
+  // Funções auxiliares para controle de favoritos e imagens
+  const toggleFavorite = (productId) => {
+    setIsFavorited((prev) => ({
+      ...prev,
+      [productId]: !prev[productId],
+    }));
+  };
+
+  const handleQuantityChange = (e, productId) => {
     const value = parseInt(e.target.value, 10);
     if (value >= 1 && value <= 99) {
-      setQuantity(value);
+      setQuantity((prev) => ({
+        ...prev,
+        [productId]: value,
+      }));
     }
   };
 
-  const incrementQuantity = () => {
-    if (quantity < 99) setQuantity(quantity + 1);
+  const incrementQuantity = (productId) => {
+    if (quantity[productId] < 99) {
+      setQuantity((prev) => ({
+        ...prev,
+        [productId]: prev[productId] + 1,
+      }));
+    }
   };
 
-  const decrementQuantity = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
+  const decrementQuantity = (productId) => {
+    if (quantity[productId] > 1) {
+      setQuantity((prev) => ({
+        ...prev,
+        [productId]: prev[productId] - 1,
+      }));
+    }
   };
 
-  const nextImage = () => setSelectedImageIndex((selectedImageIndex + 1) % images.length);
-  const prevImage = () => setSelectedImageIndex((selectedImageIndex - 1 + images.length) % images.length);
+  const nextImage = (productId) => {
+    if (products && products[productId].photo) {
+      setSelectedImageIndex((prev) => ({
+        ...prev,
+        [productId]: (prev[productId] + 1) % (Array.isArray(products[productId].photo) ? products[productId].photo.length : 1),
+      }));
+    }
+  };
 
-  const selectImage = (index) => setSelectedImageIndex(index);
-  const selectSize = (size) => setSize(size);
+  const prevImage = (productId) => {
+    if (products && products[productId].photo) {
+      setSelectedImageIndex((prev) => ({
+        ...prev,
+        [productId]: (prev[productId] - 1 + (Array.isArray(products[productId].photo) ? products[productId].photo.length : 1)) % (Array.isArray(products[productId].photo) ? products[productId].photo.length : 1),
+      }));
+    }
+  };
+
+  const selectImage = (productId, index) => {
+    setSelectedImageIndex((prev) => ({
+      ...prev,
+      [productId]: index,
+    }));
+  };
+
+  const selectSize = (productId, size) => {
+    setSize((prev) => ({
+      ...prev,
+      [productId]: size,
+    }));
+  };
 
   const sizeOptions = ['P', 'M', 'G', 'GG'];
 
+  // Função para garantir que o preço seja um número
+  const formatPrice = (price) => {
+    const numericPrice = parseFloat(price);
+    return !isNaN(numericPrice) ? numericPrice.toFixed(2) : '0.00';
+  };
+
   return (
-    <div className={`card-product ${darkMode ? 'card-product-dark' : ''}`}>
-      <div className="carousel-container">
-        <div className="carousel-main-image">
-          <button className="carousel-arrow prev" onClick={prevImage}>❮</button>
-          <img src={images[selectedImageIndex]} alt={`${productTitle} - Imagem ${selectedImageIndex + 1}`} className="main-image" />
-          <button className="carousel-arrow next" onClick={nextImage}>❯</button>
-        </div>
-        
-        <div className="carousel-thumbnails">
-          {images.map((img, index) => (
-            <div
-              key={index}
-              className={`thumbnail ${selectedImageIndex === index ? 'active' : ''}`}
-              onClick={() => selectImage(index)}
-            >
-              <img src={img} alt={`Miniatura ${index + 1}`} />
+    <div className={`card-products-container ${darkMode ? 'dark' : ''}`}>
+      {/* Carrossel de Banners */}
+      <div className="banner-carousel">
+        <button className="carousel-arrow prev" onClick={prevBanner}>❮</button>
+        <img src={banners[bannerIndex]} alt={`Banner ${bannerIndex + 1}`} className="banner-image" />
+        <button className="carousel-arrow next" onClick={nextBanner}>❯</button>
+      </div>
+
+      {error ? (
+        <p className="error">{error}</p>
+      ) : (
+        products.map((product) => {
+          const { id, name, photo, color, reference, retail_price } = product;
+
+          // Verifique se o produto tem foto e se é um array ou string
+          const imageUrl = Array.isArray(photo) ? `http://127.0.0.1:8000${photo[selectedImageIndex[id] || 0]}` : `http://127.0.0.1:8000${photo}`;
+
+          return (
+            <div className="card-product" key={id}>
+              <div className="carousel-container">
+                <div className="carousel-main-image">
+                  <button 
+                    className="carousel-arrow prev" 
+                    onClick={() => prevImage(id)} 
+                    disabled={!Array.isArray(photo) || photo.length <= 1}
+                  >
+                    ❮
+                  </button>
+                  <img
+                    src={imageUrl}
+                    alt={`${name} - Imagem`}
+                    className="main-image"
+                    onError={(e) => e.target.src = 'default-image.jpg'} // Fallback de imagem se não carregar
+                  />
+                  <button 
+                    className="carousel-arrow next" 
+                    onClick={() => nextImage(id)} 
+                    disabled={!Array.isArray(photo) || photo.length <= 1}
+                  >
+                    ❯
+                  </button>
+                </div>
+
+                <div className="carousel-thumbnails">
+                  {Array.isArray(photo) && photo.map((img, index) => (
+                    <div
+                      key={index}
+                      className={`thumbnail ${selectedImageIndex[id] === index ? 'active' : ''}`}
+                      onClick={() => selectImage(id, index)}
+                    >
+                      <img
+                        src={img}
+                        alt={`Miniatura ${index + 1}`}
+                        onError={(e) => e.target.src = 'default-image.jpg'}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="product-details">
+                <h2 className="product-title">{name}</h2>
+                <p>Cor: {color || 'Indisponível'}</p>
+                <p>Referência: {reference || 'N/A'}</p>
+                
+                <div className="size-selector">
+                  {sizeOptions.map((s) => (
+                    <button
+                      key={s}
+                      className={`size-option ${size[id] === s ? 'selected' : ''}`}
+                      onClick={() => selectSize(id, s)}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="quantity-section">
+                  <button className="quantity-button" onClick={() => decrementQuantity(id)}>-</button>
+                  <input
+                    type="number"
+                    min="1"
+                    max="99"
+                    value={quantity[id] || 1}
+                    onChange={(e) => handleQuantityChange(e, id)}
+                    className="quantity-input"
+                  />
+                  <button className="quantity-button" onClick={() => incrementQuantity(id)}>+</button>
+                </div>
+                
+                <p className="product-price">
+                  Valor Unitário: R$ {formatPrice(retail_price)}<br />
+                  Total: R$ {formatPrice(retail_price * (quantity[id] || 1))}
+                </p>
+
+                <div className="buttons">
+                  <button
+                    className={`favorite-button ${isFavorited[id] ? 'favorited' : ''}`}
+                    onClick={() => toggleFavorite(id)}
+                  >
+                    ❤
+                  </button>
+                  <button className="buy-button">COMPRAR</button>
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="product-details">
-        <h2 className="product-title">{productTitle}</h2>
-        
-        <div className="size-selector">
-          {sizeOptions.map((s) => (
-            <button
-              key={s}
-              className={`size-option ${size === s ? 'selected' : ''}`}
-              onClick={() => selectSize(s)}
-            >
-              {s}
-            </button>
-          ))}
-        </div>
-
-        <div className="quantity-section">
-          <button className="quantity-button" onClick={decrementQuantity}>-</button>
-          <input
-            type="number"
-            min="1"
-            max="99"
-            value={quantity}
-            onChange={handleQuantityChange}
-            className="quantity-input"
-          />
-          <button className="quantity-button" onClick={incrementQuantity}>+</button>
-        </div>
-        
-        <p className="product-price">Valor: R$ {100.00 * quantity}</p>
-        <div className="buttons">
-          <button
-            className={`favorite-button ${isFavorited ? 'favorited' : ''}`}
-            onClick={toggleFavorite}
-          >
-            ❤
-          </button>
-          <button className="buy-button">COMPRAR</button>
-        </div>
-      </div>
+          );
+        })
+      )}
     </div>
   );
 };

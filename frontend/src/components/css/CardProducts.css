@@ -1,12 +1,21 @@
 /* Estilo básico do card do produto */
+.card-products-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colunas de largura igual */
+  gap: 20px; /* Espaçamento entre os cards */
+  margin: 20px; /* Margem nos lados e acima */
+}
+
+/* Estilo básico do card do produto */
 .card-product {
   background-color: white;
   color: black;
   padding: 20px;
   border-radius: 8px;
-  margin: 10px;
   transition: all 0.3s ease-in-out; /* Transição suave para mudanças de tema */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Sombra suave no modo claro */
+  max-width: 300px; /* Limita o tamanho máximo dos cards */
+  margin: 0 auto; /* Centraliza os cards */
 }
 
 /* Estilo do card no modo escuro */
@@ -242,7 +251,6 @@
   background-color: #0056b3;
 }
 
-/* Tamanho da fonte e bordas para o modo escuro */
 .card-product-dark .size-option {
   border-color: #555;
   background-color: #444;
@@ -256,4 +264,55 @@
 
 .card-product-dark .quantity-button:hover {
   background-color: #555;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .card-products-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas menores */
+  }
+}
+
+@media (max-width: 480px) {
+  .card-products-container {
+    grid-template-columns: 1fr; /* 1 coluna em telas muito pequenas */
+  }
+}
+
+/* Estilos ajustados para o banner */
+.banner-carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 20px; /* Espaço entre o banner e os produtos */
+  width: 100%;
+  height: 100vh; /* Preenche toda a altura da tela */
+  overflow: hidden;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cobre toda a área da tela */
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.carousel-arrow.prev {
+  left: 10px;
+}
+
+.carousel-arrow.next {
+  right: 10px;
 }
