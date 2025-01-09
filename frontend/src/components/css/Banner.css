@@ -1,0 +1,39 @@
+.banner-container {
+    position: relative;
+    width: 100%; /* Ocupa toda a largura disponível */
+    height: 400px; /* Ajuste a altura conforme necessário */
+    overflow: hidden;
+  }
+  
+  .banner-image {
+    width: 100%; /* Faz o banner ocupar toda a largura */
+    height: 100%; /* Faz o banner ocupar toda a altura */
+    object-fit: cover; /* Mantém a proporção da imagem e a preenche */
+  }
+  
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 10;
+    border-radius: 50%;
+  }
+  
+  .carousel-arrow.prev {
+    left: 10px;
+  }
+  
+  .carousel-arrow.next {
+    right: 10px;
+  }
+  
+  .carousel-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  

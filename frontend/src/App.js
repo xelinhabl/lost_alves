@@ -12,6 +12,7 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Profile from './components/Profile';
 import AddProduct from './components/AddProduct'; // Importando o novo componente
+import Banner from './components/Banner';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Router>
           {/* Renderiza o Header no topo de todas as páginas */}
           <Header />
+          <Banner />
 
           {/* Configuração das rotas */}
           <Routes>

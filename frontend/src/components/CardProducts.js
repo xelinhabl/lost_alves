@@ -12,22 +12,6 @@ const CardProducts = () => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
 
-  // Adicionando estado para o carrossel de banners
-  const [bannerIndex, setBannerIndex] = useState(0);
-  const banners = [
-    '/logo/banner1.webp',
-    '/logo/banner2.webp',
-  ];
-
-  // Função para alternar entre os banners no carrossel
-  const nextBanner = () => {
-    setBannerIndex((prevIndex) => (prevIndex + 1) % banners.length);
-  };
-
-  const prevBanner = () => {
-    setBannerIndex((prevIndex) => (prevIndex - 1 + banners.length) % banners.length);
-  };
-
   useEffect(() => {
     const fetchProducts = async () => {
       const token = localStorage.getItem('access_token'); // Obter o token de autenticação
@@ -133,13 +117,6 @@ const CardProducts = () => {
 
   return (
     <div className={`card-products-container ${darkMode ? 'dark' : ''}`}>
-      {/* Carrossel de Banners */}
-      <div className="banner-carousel">
-        <button className="carousel-arrow prev" onClick={prevBanner}>❮</button>
-        <img src={banners[bannerIndex]} alt={`Banner ${bannerIndex + 1}`} className="banner-image" />
-        <button className="carousel-arrow next" onClick={nextBanner}>❯</button>
-      </div>
-
       {error ? (
         <p className="error">{error}</p>
       ) : (
