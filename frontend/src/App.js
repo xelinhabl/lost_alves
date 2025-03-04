@@ -6,7 +6,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { UserProvider } from './context/UserContext';
 
 // Importação dos componentes
-import Header from './components/Header';
+import Header from './components/Header'; 
 import CardProducts from './components/CardProducts';
 import Register from './components/Register';
 import Login from './components/Login';
